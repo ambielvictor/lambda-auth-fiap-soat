@@ -27,6 +27,7 @@ jobs:
         run: |
           cd lambda
           mvn clean package -DskipTests
+          cd ..
 
       - name: Configurar credenciais AWS
         run: |
@@ -40,7 +41,10 @@ jobs:
           terraform_version: 1.10.5
 
       - name: Inicializar Terraform
-        run: terraform init
+        run: |
+          cd terraform
+          terraform init
 
       - name: Aplicar Terraform (Deploy Lambda)
-        run: terraform apply -auto-approve
+        run: |
+          terraform apply -auto-approve
