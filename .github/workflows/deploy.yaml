@@ -23,10 +23,10 @@ jobs:
           distribution: 'temurin'
           java-version: '21'
 
-      - name: Compilar Lambda (Gerar JAR)
+      - name: Compilar Lambda
         run: |
           cd lambda
-          ./mvnw clean package -DskipTests
+          mvn clean package -DskipTests
 
       - name: Configurar credenciais AWS
         uses: aws-actions/configure-aws-credentials@v2
