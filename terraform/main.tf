@@ -29,8 +29,9 @@ resource "aws_s3_object" "lambda_jar" {
   bucket = var.s3_bucket_builds
   key    = "app-${time_static.build_id.unix}.jar"
   source = var.local_jar_path
-  etag   = filemd5(var.local_jar_path)
+  etag = fileexists(var.local_jar_path) ? filemd5(var.local_jar_path) : null
 }
+
 
 # Criar uma Role para a Lambda
 resource "aws_iam_role" "lambda_role" {
