@@ -24,10 +24,10 @@ jobs:
 
       - name: Inicializar Terraform
         run: |
-          cd lambda/terraform
+          cd terraform
           terraform init
 
       - name: Destruir Infraestrutura
         run: |
-          cd lambda/terraform
+          cd terraform
           terraform destroy -auto-approve
