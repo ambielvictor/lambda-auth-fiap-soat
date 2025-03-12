@@ -46,4 +46,5 @@ jobs:
 
       - name: Aplicar Terraform (Deploy Lambda)
         run: |
+          cd terraform
           terraform apply -auto-approve
