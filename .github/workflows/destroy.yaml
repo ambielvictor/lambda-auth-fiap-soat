@@ -8,22 +8,26 @@ jobs:
     runs-on: ubuntu-latest
 
     permissions:
-      id-token: write
       contents: read
+
+    env:
+      AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+      AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+      AWS_REGION: us-east-1
 
     steps:
       - name: Checkout do código
         uses: actions/checkout@v4
 
-      - name: Configurar credenciais AWS
-        uses: aws-actions/configure-aws-credentials@v2
-        with:
-          role-to-assume: arn:aws:iam::${{ secrets.AWS_ACCOUNT_ID }}:role/github-terraform
-          role-session-name: GitHubTerraformSession
-          aws-region: us-east-1
+      - name: Configurar Terraform
+        uses: hashicorp/setup-terraform@v2
 
       - name: Inicializar Terraform
-        run: terraform init
+        run: |
+          cd lambda/terraform
+          terraform init
 
       - name: Destruir Infraestrutura
-        run: terraform destroy -auto-approve
+        run: |
+          cd lambda/terraform
+          terraform destroy -auto-approve
