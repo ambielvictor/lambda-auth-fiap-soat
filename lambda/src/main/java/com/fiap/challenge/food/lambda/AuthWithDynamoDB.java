@@ -54,7 +54,7 @@ public class AuthWithDynamoDB implements RequestHandler<APIGatewayProxyRequestEv
 
             String token = gerarJWT(cpf, consumerId);
             Map<String, String> responseBody = new HashMap<>();
-            responseBody.put("token", token);
+            responseBody.put("token", String.format("Bearer %s", token));
 
             return generateResponse(200, objectMapper.writeValueAsString(responseBody));
 
