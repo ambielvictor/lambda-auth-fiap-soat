@@ -6,7 +6,7 @@ on:
       - main
 
 jobs:
-  deploy:
+  build-and-deploy:
     runs-on: ubuntu-latest
 
     permissions:
@@ -29,11 +29,15 @@ jobs:
           mvn clean package -DskipTests
 
       - name: Configurar credenciais AWS
-        uses: aws-actions/configure-aws-credentials@v2
+        run: |
+          export AWS_ACCESS_KEY_ID=${{ secrets.AWS_ACCESS_KEY_ID }}
+          export AWS_SECRET_ACCESS_KEY=${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          export AWS_REGION=us-east-1
+
+      - name: Configurar Terraform
+        uses: hashicorp/setup-terraform@v2
         with:
-          role-to-assume: arn:aws:iam::${{ secrets.AWS_ACCOUNT_ID }}:role/github-terraform
-          role-session-name: GitHubTerraformSession
-          aws-region: us-east-1
+          terraform_version: 1.10.5
 
       - name: Inicializar Terraform
         run: terraform init
