@@ -1,0 +1,29 @@
+name: Destroy Infraestrutura
+
+on:
+  workflow_dispatch:  # Apenas manualmente
+
+jobs:
+  destroy:
+    runs-on: ubuntu-latest
+
+    permissions:
+      id-token: write
+      contents: read
+
+    steps:
+      - name: Checkout do código
+        uses: actions/checkout@v4
+
+      - name: Configurar credenciais AWS
+        uses: aws-actions/configure-aws-credentials@v2
+        with:
+          role-to-assume: arn:aws:iam::${{ secrets.AWS_ACCOUNT_ID }}:role/github-terraform
+          role-session-name: GitHubTerraformSession
+          aws-region: us-east-1
+
+      - name: Inicializar Terraform
+        run: terraform init
+
+      - name: Destruir Infraestrutura
+        run: terraform destroy -auto-approve
