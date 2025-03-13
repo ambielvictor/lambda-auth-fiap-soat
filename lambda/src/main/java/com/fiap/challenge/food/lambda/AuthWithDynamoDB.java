@@ -108,4 +108,5 @@ public class AuthWithDynamoDB implements RequestHandler<APIGatewayProxyRequestEv
                 .withHeaders(Map.of("Content-Type", "application/json"))
                 .withBody(body);
     }
+
 }
